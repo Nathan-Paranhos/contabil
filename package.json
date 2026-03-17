@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.app.json && vite build",
     "preview": "vite preview",
-    "test:hero": "node tests/hero-visual.mjs"
+    "test:hero": "node tests/hero-visual.mjs",
+    "test:responsive": "node tests/responsive-layout.mjs"
   },
   "dependencies": {
     "gsap": "^3.13.0",

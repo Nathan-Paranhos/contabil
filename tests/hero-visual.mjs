@@ -54,7 +54,7 @@ async function capture(label, scrollY) {
     {},
     scrollY,
   );
-  await new Promise((resolve) => setTimeout(resolve, 350));
+  await new Promise((resolve) => setTimeout(resolve, 450));
 
   const state = await page.evaluate(() => {
     const rectOf = (selector) => {
@@ -80,6 +80,7 @@ async function capture(label, scrollY) {
     };
 
     return {
+      copy: rectOf("[data-hero-copy]"),
       image: rectOf(".hero-image-frame"),
       panel: rectOf(".hero-live-card"),
       ticker: rectOf(".ticker-wrap"),
@@ -108,12 +109,14 @@ async function capture(label, scrollY) {
 const top = await capture("top", 0);
 const mid = await capture("mid-hero", 650);
 const end = await capture("end-hero", 1100);
+const returnTop = await capture("return-top", 0);
 
 await browser.close();
 
 assert.ok(top.image, "Hero image frame nao foi encontrada.");
 assert.ok(top.panel, "Painel ao vivo nao foi encontrado.");
 assert.ok(top.ticker, "Ticker do hero nao foi encontrado.");
+assert.ok(top.copy, "Bloco de copy do hero nao foi encontrado.");
 
 const topOverlap = overlapArea(top.image, top.panel);
 const topMaxPieceOpacity = Math.max(...top.pieces.map((piece) => piece.opacity));
@@ -124,8 +127,16 @@ assert.ok(top.panel.opacity > 0.88, `Painel do hero nao ficou visivel o bastante
 assert.ok(topOverlap < 24, `Painel ainda esta sobreposto na imagem: area=${topOverlap}`);
 assert.ok(topMaxPieceOpacity < 0.18, `Pecas do quebra-cabeca nao sumiram apos a montagem: ${topMaxPieceOpacity}`);
 assert.ok(midMaxPieceOpacity > 0.28, `Pecas nao reapareceram no scroll do hero: ${midMaxPieceOpacity}`);
-assert.ok(end.panel.opacity < 0.32, `Painel deveria estar saindo no fim do hero: ${end.panel.opacity}`);
-assert.ok(end.ticker.opacity < 0.4, `Ticker deveria estar saindo no fim do hero: ${end.ticker.opacity}`);
+assert.ok(end.panel.opacity < 0.62, `Painel deveria estar saindo no fim do hero: ${end.panel.opacity}`);
+assert.ok(end.ticker.opacity < 0.72, `Ticker deveria estar saindo no fim do hero: ${end.ticker.opacity}`);
+assert.ok(returnTop.copy.opacity > 0.95, `Copy do hero nao voltou ao normal no topo: ${returnTop.copy.opacity}`);
+assert.ok(returnTop.image.opacity > 0.94, `Imagem do hero nao voltou ao normal no topo: ${returnTop.image.opacity}`);
+assert.ok(returnTop.panel.opacity > 0.88, `Painel do hero nao voltou ao normal no topo: ${returnTop.panel.opacity}`);
+assert.ok(returnTop.ticker.opacity > 0.92, `Ticker do hero nao voltou ao normal no topo: ${returnTop.ticker.opacity}`);
+assert.ok(
+  Math.max(...returnTop.pieces.map((piece) => piece.opacity)) < 0.18,
+  "Pecas do hero continuaram visiveis ao voltar para o topo.",
+);
 
 console.log("Hero visual OK");
 console.log(`Screenshots salvas em ${outputDir}`);

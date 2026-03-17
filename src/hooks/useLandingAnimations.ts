@@ -167,8 +167,48 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
             trigger: ".hero-section",
             start: "top top",
             end: "bottom top",
-            scrub: 0.8,
+            scrub: true,
             invalidateOnRefresh: true,
+            onLeaveBack: () => {
+              gsap.set(heroCopy, {
+                autoAlpha: 1,
+                y: 0,
+              });
+
+              gsap.set(heroImageFrame, {
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+              });
+
+              if (heroImage) {
+                gsap.set(heroImage, {
+                  autoAlpha: 1,
+                  scale: 1,
+                  yPercent: 0,
+                });
+              }
+
+              gsap.set(heroLive, {
+                autoAlpha: 1,
+                y: 0,
+              });
+
+              gsap.set(tickerWrap, {
+                autoAlpha: 1,
+                y: 0,
+              });
+
+              if (heroPieces.length) {
+                gsap.set(heroPieces, {
+                  autoAlpha: 0,
+                  x: 0,
+                  y: 0,
+                  rotate: 0,
+                  scale: 1,
+                });
+              }
+            },
           },
         });
 
@@ -179,8 +219,8 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
             y: 0,
           },
           {
-            autoAlpha: 0.26,
-            y: -64,
+            autoAlpha: 0.42,
+            y: -48,
             ease: "none",
           },
           0,
@@ -189,14 +229,12 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
         heroScrollTimeline.fromTo(
           heroImageFrame,
           {
-            autoAlpha: 1,
             y: 0,
             scale: 1,
           },
           {
-            autoAlpha: 0.76,
-            y: -26,
-            scale: 0.97,
+            y: -16,
+            scale: 0.985,
             ease: "none",
           },
           0,
@@ -225,8 +263,8 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
             y: 0,
           },
           {
-            autoAlpha: 0.12,
-            y: 44,
+            autoAlpha: 0.48,
+            y: 18,
             ease: "none",
           },
           0.08,
@@ -239,8 +277,8 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
             y: 0,
           },
           {
-            autoAlpha: 0.14,
-            y: 36,
+            autoAlpha: 0.56,
+            y: 16,
             ease: "none",
           },
           0.12,
@@ -296,9 +334,9 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
         });
 
         gsap.set(stage, {
-          autoAlpha: 0.76,
-          y: 46,
-          scale: 0.988,
+          autoAlpha: 0.9,
+          y: 22,
+          scale: 0.996,
         });
 
         gsap.to(stage, {
@@ -311,23 +349,23 @@ export function useLandingAnimations(): RefObject<HTMLDivElement | null> {
             trigger: stage,
             start: "top 92%",
             end: "top 64%",
-            scrub: 0.55,
+            scrub: true,
             invalidateOnRefresh: true,
           },
         });
 
         if (!isLastStage) {
           gsap.to(stage, {
-            autoAlpha: 0.72,
-            y: -24,
-            scale: 0.995,
+            autoAlpha: 0.95,
+            y: -8,
+            scale: 0.999,
             ease: "none",
             overwrite: "auto",
             scrollTrigger: {
               trigger: stage,
               start: "bottom 56%",
               end: "bottom 28%",
-              scrub: 0.55,
+              scrub: true,
               invalidateOnRefresh: true,
             },
           });
